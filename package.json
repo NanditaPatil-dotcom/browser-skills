@@ -1,0 +1,20 @@
+{
+  "name": "browser-skills",
+  "version": "1.0.0",
+  "description": "Awesome Browser Skills — Claude Skills for browser automation, research, and data extraction across the web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/composio-community/browser-skills.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/composio-community/browser-skills/issues"
+  },
+  "homepage": "https://github.com/composio-community/browser-skills#readme"
+}
