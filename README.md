@@ -99,6 +99,7 @@ Skills are not MCP servers and not tools. MCP defines how an agent connects to e
 - [glassdoor-analyzer](glassdoor-analyzer/) — Scrape company reviews, salary data, and interview signals; useful for job research, sales personalization, and talent benchmarking.
 - [app-store-reviews](app-store-reviews/) — Scrape App Store and Google Play reviews; cluster pain points, feature requests, and competitor mentions from real mobile users.
 - [price-monitor](price-monitor/) — Monitor product or SaaS plan prices across sites; detect drops, restocks, and pricing-page changes with a price-history file.
+- [competitor-pricing-tracker](competitor-pricing-tracker/) — Track competitor SaaS pricing, packaging, feature limits, add-ons, and pricing-page changes.
 - [news-aggregator](news-aggregator/) — Collect and cluster news coverage on any topic across multiple outlets; identifies dominant narrative, dissenting takes, and missing angles.
 
 ### Business & Marketing
