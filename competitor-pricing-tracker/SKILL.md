@@ -48,3 +48,20 @@ pricing-page change signals.
 - Feature moved between tiers
 - Trial or free-plan changes
 - New add-on, limit, compliance, or enterprise messaging
+
+---
+
+## Data Sources
+
+| Source | What to find | How |
+|--------|-------------|-----|
+| `{competitor}.com/pricing` | Plans, prices, packaging | `COMPOSIO_SEARCH_FETCH_URL_CONTENT`; fall back to browser |
+| `{competitor}.com/plans` or `/compare` | Plan limits and feature matrices | `BROWSER_TOOL_CREATE_TASK` for toggles and accordions |
+| Help docs / billing docs | Usage limits, overages, add-ons | `COMPOSIO_SEARCH_WEB`, then fetch matching URLs |
+| Signup or checkout flow | Trial details, seat minimums, hidden fees | `BROWSER_TOOL_CREATE_TASK`; stop before payment |
+| Blog / changelog | Pricing migration announcements | `COMPOSIO_SEARCH_WEB` and `COMPOSIO_SEARCH_FETCH_URL_CONTENT` |
+| G2 / Capterra / review sites | Pricing complaints and buyer language | `COMPOSIO_SEARCH_WEB`; use browser only for public pages |
+| Archived snapshots | Historical pricing if user provides URLs | Fetch archived page; browser fallback for rendered captures |
+
+Prefer direct company sources over third-party summaries. Use third-party
+pages only to fill gaps or identify claims to verify against the vendor site.
