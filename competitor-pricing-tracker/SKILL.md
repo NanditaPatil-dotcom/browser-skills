@@ -65,3 +65,84 @@ pricing-page change signals.
 
 Prefer direct company sources over third-party summaries. Use third-party
 pages only to fill gaps or identify claims to verify against the vendor site.
+
+---
+
+## Pipeline
+
+### Step 1: Discover pricing URLs
+
+Use search when the user gives company names instead of exact URLs:
+
+```bash
+for COMPANY in {COMPETITOR_NAMES}; do
+  for Q in \
+    "$COMPANY pricing" \
+    "$COMPANY plans pricing" \
+    "$COMPANY billing usage limits"; do
+    composio execute COMPOSIO_SEARCH_WEB -d "$(jq -n --arg q "$Q" '{ query: $q }')"
+  done
+done
+```
+
+Keep the canonical pricing page, plan comparison page, billing docs, and
+recent pricing-announcement posts for each competitor.
+
+### Step 2: Fetch static pricing pages first
+
+Fetch is faster and works well for static HTML pricing pages:
+
+```bash
+composio execute COMPOSIO_SEARCH_FETCH_URL_CONTENT -d "$(jq -n \
+  --argjson urls "$(printf '%s\n' "${PRICING_URLS[@]}" | jq -R . | jq -s .)" \
+  '{ urls: $urls, max_characters: 30000 }')"
+```
+
+If the returned text misses prices, plan cards, feature matrices, billing
+toggles, or accordion content, use the cloud browser.
+
+### Step 3: Extract JS-rendered pricing with Composio browser
+
+```bash
+composio execute BROWSER_TOOL_CREATE_TASK -d '{
+  "task": "Extract the full SaaS pricing page. Toggle monthly and annual billing if present. Expand feature comparison rows, FAQ accordions, add-on sections, and enterprise/contact-sales sections. For each plan capture: name, monthly price, annual price, currency, billing unit, seat minimum, included usage, overages, feature limits, trial/free-plan terms, add-ons, CTA text, and any disclaimers. Return normalized JSON plus short notes on ambiguous values.",
+  "startUrl": "{PRICING_URL}"
+}'
+```
+
+For checkout or signup flows, stop before submitting account, payment, or
+contract information:
+
+```bash
+composio execute BROWSER_TOOL_CREATE_TASK -d '{
+  "task": "Open the signup or checkout path only far enough to inspect public pricing, trial terms, required seat count, and payment requirements. Do not create an account, submit personal data, enter payment details, or accept terms. Return the visible pricing details as JSON.",
+  "startUrl": "{SIGNUP_OR_CHECKOUT_URL}"
+}'
+```
+
+### Step 4: Compare competitors in a batch
+
+```bash
+mkdir -p ~/Desktop/{slug}_competitor_pricing_{YYYY-MM-DD}/raw
+
+for URL in "${PRICING_URLS[@]}"; do
+  SAFE_NAME=$(printf "%s" "$URL" | tr -cs '[:alnum:]' '_' | sed 's/_$//')
+  composio execute BROWSER_TOOL_CREATE_TASK -d "$(jq -n --arg u "$URL" '{
+    task: "Extract SaaS pricing, packaging, plan limits, add-ons, trial details, enterprise CTA, and disclaimers. Toggle billing options and expand hidden sections. Return normalized JSON.",
+    startUrl: $u
+  }')" > ~/Desktop/{slug}_competitor_pricing_{YYYY-MM-DD}/raw/"$SAFE_NAME.json"
+done
+```
+
+### Step 5: Check recent pricing changes
+
+```bash
+for COMPANY in {COMPETITOR_NAMES}; do
+  for Q in \
+    "$COMPANY pricing change 2025 2026" \
+    "$COMPANY new pricing plans" \
+    "$COMPANY billing changelog"; do
+    composio execute COMPOSIO_SEARCH_WEB -d "$(jq -n --arg q "$Q" '{ query: $q }')"
+  done
+done
+```
