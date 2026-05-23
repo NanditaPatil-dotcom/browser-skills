@@ -146,3 +146,115 @@ for COMPANY in {COMPETITOR_NAMES}; do
   done
 done
 ```
+
+---
+
+## Normalized JSON Shape
+
+Use this shape for each competitor before building the final report:
+
+```json
+{
+  "company": "{Company}",
+  "pricing_url": "{URL}",
+  "captured_at": "{ISO datetime}",
+  "currency": "USD",
+  "plans": [
+    {
+      "name": "Pro",
+      "monthly_price": 49,
+      "annual_price": 39,
+      "billing_unit": "user/month",
+      "seat_minimum": 1,
+      "included_usage": ["10 projects", "100GB storage"],
+      "feature_limits": ["basic analytics", "standard support"],
+      "addons": ["extra usage billed separately"],
+      "trial": "14 days, credit card not required",
+      "cta": "Start free trial",
+      "notes": "Annual price shown as monthly equivalent."
+    }
+  ],
+  "enterprise": {
+    "available": true,
+    "cta": "Contact sales",
+    "claims": ["SSO", "SOC 2", "custom limits"]
+  },
+  "source_quality": "direct_browser",
+  "ambiguities": ["Usage overage listed in docs, not pricing page."]
+}
+```
+
+---
+
+## Output Format
+
+```markdown
+---
+topic: {SPACE_OR_PRODUCT_CATEGORY}
+competitors_analyzed: {N}
+pricing_pages_checked: {N}
+researched_at: {ISO datetime}
+---
+
+## Executive Summary
+
+**Lowest entry price**: {company + plan + price}
+**Most aggressive free tier**: {company + reason}
+**Most enterprise-oriented**: {company + evidence}
+**Notable pricing risk**: {where your pricing may look weak}
+
+## Pricing Matrix
+
+| Company | Plan | Monthly | Annual | Billing Unit | Trial / Free | Key Limits |
+|---------|------|---------|--------|--------------|--------------|------------|
+| {Company} | {Plan} | ${N} | ${N} | user/mo | 14-day trial | {limits} |
+
+## Packaging Differences
+
+| Feature / Limit | {Competitor A} | {Competitor B} | {Competitor C} |
+|-----------------|----------------|----------------|----------------|
+| Seats included | {value} | {value} | {value} |
+| Usage cap | {value} | {value} | {value} |
+| SSO | {plan} | {plan} | {plan} |
+
+## Change Signals
+
+- {Company}: {pricing or packaging change signal} — {source URL}
+- {Company}: {new plan / removed plan / new add-on} — {source URL}
+
+## Positioning Notes
+
+- **Upgrade triggers**: {features competitors use to push paid plans}
+- **Discounting pattern**: {annual savings, launch discounts, hidden promos}
+- **Enterprise pattern**: {security/procurement claims and contact-sales usage}
+
+## Source Notes
+
+| Company | Source Quality | Ambiguities |
+|---------|----------------|-------------|
+| {Company} | direct browser | {anything unclear or hidden} |
+```
+
+---
+
+## Guardrails
+
+- Do not submit signup, checkout, account-creation, payment, demo-request, or
+  contact-sales forms without explicit user approval.
+- Do not bypass paywalls, logins, access controls, or robots-denied private
+  areas. Use only public pages unless the user provides authorized access.
+- Treat pricing claims from search snippets, third-party pages, and review sites
+  as unverified until confirmed on the vendor website.
+- Preserve source URLs for every factual pricing claim.
+- Flag ambiguity instead of guessing when billing units, annual discounts, tax,
+  or usage overages are unclear.
+
+---
+
+## Key Use Cases
+
+1. **Pricing strategy** — benchmark your own packaging against competitors
+2. **Sales enablement** — prepare competitor battlecards with current prices
+3. **Product marketing** — identify plan gates and positioning language
+4. **Finance planning** — track vendor pricing for procurement and renewals
+5. **Competitive intelligence** — detect new plans, add-ons, and expansion levers
