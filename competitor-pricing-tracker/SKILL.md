@@ -21,3 +21,30 @@ pricing-page change signals.
 
 **Output directory**: `~/Desktop/{slug}_competitor_pricing_{YYYY-MM-DD}/`
 
+---
+
+## What It Tracks
+
+### Pricing Page Snapshot
+- Plan names and public prices
+- Monthly, annual, and usage-based billing terms
+- Seat minimums, included usage, and overage pricing
+- Feature gates and packaging differences by plan
+- Free plan, trial length, credit card requirement, and signup CTA
+- Add-ons, platform fees, implementation fees, and support tiers
+- Enterprise CTA language, procurement/security claims, and contact path
+- Currency, region, tax/VAT notes, and billing disclaimers
+
+### Competitive Positioning
+- Target customer implied by each plan
+- Core features used as upgrade triggers
+- Discount messaging and annual savings claims
+- Pricing page copy changes that signal strategic positioning
+- Bundled products, usage caps, and expansion levers
+
+### Change Detection
+- New, removed, or renamed plans
+- Price changes by plan and billing cadence
+- Feature moved between tiers
+- Trial or free-plan changes
+- New add-on, limit, compliance, or enterprise messaging
